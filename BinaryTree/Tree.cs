@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,11 +25,18 @@ namespace BinaryTree
                 Console.WriteLine($"EDestructor:\t{GetHashCode()}");
             }
         }
-        public Element Root { get; set; }
+        protected Element Root { get; set; }
         public Tree()
         {
             Root = null;
             Console.WriteLine($"TConstructor:\t{GetHashCode()}");
+        }
+        public Tree(params int[] values) : this()
+        {
+            foreach (int i in values)
+            {
+                Insert(i, Root);
+            }
         }
         ~Tree()
         {
@@ -55,44 +61,76 @@ namespace BinaryTree
                 else Insert(Data, Root.pRight);
             }
         }
-        public int MinValue()
+        public void Erase(int Data) => Erase(Data, Root, null);
+        void Erase(int Data, Element Root, Element Parent)
         {
-            return MinValue(Root);
+            if (Root == null) return;
+            Erase(Data, Root.pLeft, Root);
+            Erase(Data, Root.pRight, Root);
+            if (Data == Root.Data)
+            {
+                if (Root.pLeft == Root.pRight)
+                {
+                    if (Root.Equals(Parent.pLeft)) Parent.pLeft = null;
+                    if (Root.Equals(Parent.pRight)) Parent.pRight = null;
+                    Root = null;
+                    GC.Collect(1);
+                }
+                else
+                {
+                    if (Count(Root.pLeft) > Count(Root.pRight))
+                    {
+                        Root.Data = MaxValue(Root.pLeft);
+                        Erase(MaxValue(Root.pLeft), Root.pLeft, Root);
+                    }
+                    else
+                    {
+                        Root.Data = MinValue(Root.pRight);
+                        Erase(MinValue(Root.pRight), Root.pRight, Root);
+                    }
+                }
+            }
         }
+        public void Clear()
+        {
+            //if (Root == null) return;
+            //Clear(Root.pLeft);
+            //Clear(Root.pRight);
+            //Root = null;
+            Root = null;
+            GC.Collect(1);
+        }
+        public int MinValue() => MinValue(Root);
         int MinValue(Element Root)
         {
-            if (Root == null) throw new Exception("Tree is empty");
+            if (Root == null) throw new Exception("Tree is empty in MinValue");
             return Root.pLeft == null ? Root.Data : MinValue(Root.pLeft);
         }
-        public int MaxValue()
-        {
-            return MaxValue(Root);
-        }
+        public int MaxValue() => MaxValue(Root);
         int MaxValue(Element Root)
         {
-            if (Root == null) throw new Exception("Tree is empty");
+            if (Root == null) throw new Exception("Tree is empty MaxValue");
             return Root.pRight == null ? Root.Data : MaxValue(Root.pRight);
         }
-        public int Sum()
-        {
-            return Sum(Root);
-        }
+        public int Sum() => Sum(Root);
         int Sum(Element Root)
         {
             if (Root == null) return 0;
             else return Sum(Root.pLeft) + Sum(Root.pRight) + Root.Data;
         }
-        public int Count()
-        {
-            return Count(Root);
-        }
+        public int Count() => Count(Root);
         int Count(Element Root)
         {
             return Root == null ? 0 : Count(Root.pLeft) + Count(Root.pRight) + 1;
         }
-        public double Average()
+        public double Avarage() => (double)Sum(Root) / Count(Root);
+        public int Depth() => Depth(Root);
+        int Depth(Element Root)
         {
-            return (double)Sum(Root) / Count(Root);
+            if (Root == null) return 0;
+            int l_depth = Depth(Root.pLeft) + 1;
+            int r_depth = Depth(Root.pRight) + 1;
+            return l_depth > r_depth ? l_depth : r_depth;
         }
         public void Print()
         {
@@ -105,51 +143,6 @@ namespace BinaryTree
             Print(Root.pLeft);
             Console.Write(Root.Data + "\t");
             Print(Root.pRight);
-        }
-         ///////////////////
-         int Depth(Element Root) 
-        { 
-            if (Root == null) return 0;
-            if (Depth(Root.pLeft) + 1 > Depth(Root.pRight) + 1) return Depth(Root.pLeft) + 1;
-            else return Depth(Root.pRight) + 1;
-        }
-        public int Depth()
-        {
-            return Depth(Root);
-        }
-        /////////////////////
-        void Clear(Element Root)
-        {
-            if (Root == null) return;
-            Clear(Root.pLeft);
-            Clear(Root.pRight);
-            Root.Data = 0;
-        }
-        public void Clear()
-        {
-           Clear(Root);
-        }
-        //////////////////////
-        void Erase(Element Root, int Data)
-        { 
-            if (Root == null) return;
-            if (Data == Root.Data)
-            {
-                if (Root.pLeft == null && Root.pRight == null)
-                {
-                    Root = null;
-                }
-                else
-                {
-                    if (Count(Root.pLeft)>Count(Root.pRight))
-                    {
-                        Root.Data = MaxValue(Root.pLeft);
-                        Erase(MaxValue(Root.pLeft)),  Convert.ToInt32(Root.pLeft);
-                        // idk
-                    }
-                   
-                }
-            }
         }
     }
 }
