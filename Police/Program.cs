@@ -67,7 +67,7 @@ namespace Police
             Base @base = new Base(police_base);
             @base.Print();
             @base.Save("base.txt");
-            @base.Read("Test1.txt");
+            @base.Read("base.txt"); // "Test1.txt"
         }
         const string delimiter = "\n------------------------------------------";
        
