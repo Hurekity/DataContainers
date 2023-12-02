@@ -26,7 +26,7 @@ namespace Police
         }
         public override string ToString()
         {
-            return $"{DateTime.ToString()}:  {Violations.list[ID].PadRight(30)}{Place}";
+            return $"{DateTime.ToString()}:  {Violations.list[ID].PadRight(35)}{Place}";
         }
     }
 }

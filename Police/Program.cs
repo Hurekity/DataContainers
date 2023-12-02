@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Management.Instrumentation;
 using System.Text;
@@ -9,6 +10,7 @@ namespace Police
 {
     class Program
     {
+        
         static void Main(string[] args)
         {
 
@@ -50,24 +52,24 @@ namespace Police
                  Console.WriteLine(en.Current.Key);
              }*/
             #region PrintInMain
-           /* foreach (KeyValuePair<LicencePlate, List<Crime>> i in police_base)
-            {
-                Console.WriteLine($"{i.Key}:\n");
-                foreach (Crime j in i.Value)
-                {
-                    Console.WriteLine($"\t {j}");
-                }
-                Console.WriteLine(delimiter);
-            }
-            string str = "Парковка в неположенном месте";
-            Console.WriteLine(str);*/
+            /* foreach (KeyValuePair<LicencePlate, List<Crime>> i in police_base)
+             {
+                 Console.WriteLine($"{i.Key}:\n");
+                 foreach (Crime j in i.Value)
+                 {
+                     Console.WriteLine($"\t {j}");
+                 }
+                 Console.WriteLine(delimiter);
+             }
+             string str = "Парковка в неположенном месте";
+             Console.WriteLine(str);*/
             #endregion
             Base @base = new Base(police_base);
             @base.Print();
             @base.Save("base.txt");
+            @base.Read("Test1.txt");
         }
         const string delimiter = "\n------------------------------------------";
        
-        
     }
 }

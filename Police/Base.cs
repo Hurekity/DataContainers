@@ -30,20 +30,34 @@ namespace Police
                 Console.WriteLine(delimiter);
             }
         }
-        public void Save(string filename) 
+        public void Save(string filename)
         {
             StreamWriter sw = new StreamWriter(filename);
-            foreach(KeyValuePair<LicencePlate, List<Crime>> i in police_base)
+            foreach (KeyValuePair<LicencePlate, List<Crime>> i in police_base)
             {
                 sw.Write(i.Key + ":");
-                foreach(Crime j in i.Value)
+                foreach (Crime j in i.Value)
                 {
-                    sw.Write(j + ",");
+
+                    sw.Write("\n" + j + ",");
+
                 }
                 sw.WriteLine();
             }
             sw.Close();
             System.Diagnostics.Process.Start("notepad", filename);
+        }
+        public void Read(string filename)
+        {
+            StreamReader sr = new StreamReader(filename);
+            if (File.Exists(filename))
+            {
+                string[] lines = File.ReadAllLines(filename);
+                foreach (string line in lines)
+                {
+                    Console.WriteLine(line);
+                }
+            }
         }
     }
 }
