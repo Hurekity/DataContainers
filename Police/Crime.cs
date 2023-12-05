@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Police
 {
-    internal class Crime
+    class Crime
     {
         int id;
-        // DateTime datetime;
-        // string place;
+        //DateTime dateTime;
+        //string place;
         public int ID
         {
             get => id;
@@ -18,15 +18,29 @@ namespace Police
         }
         public DateTime DateTime { get; private set; }
         public string Place { get; private set; }
-        public Crime (int id, DateTime dateTime, string place)
+        public Crime(int id, DateTime dateTime, string place)
         {
             ID = id;
             DateTime = dateTime;
             Place = place;
         }
+        public Crime(string description)
+        {
+            string[] elements = description.Split(' ');
+            description = description.Replace(elements[0] + " ", "");
+            description = description.Replace(elements[1] + " ", "");
+            long timestamp = Convert.ToInt64(elements[0]);
+            DateTime = DateTime.FromBinary(timestamp);
+            ID = Convert.ToInt32(elements[1]);
+            Place = description;
+        }
         public override string ToString()
         {
-            return $"{DateTime.ToString()}:  {Violations.list[ID].PadRight(35)}{Place}";
+            return $"{DateTime.ToBinary()} {ID} {Place}";
+        }
+        public string ToScreen()
+        {
+            return $"{DateTime.ToString()}: {Violations.list[ID].PadRight(30)}{Place}";
         }
     }
 }

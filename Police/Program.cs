@@ -64,10 +64,9 @@ namespace Police
              string str = "Парковка в неположенном месте";
              Console.WriteLine(str);*/
             #endregion
-            Base @base = new Base(police_base);
+            Base @base = new Base();
+            @base.Load("Base.txt");
             @base.Print();
-            @base.Save("base.txt");
-            @base.Read("base.txt"); // "Test1.txt"
         }
         const string delimiter = "\n------------------------------------------";
        
